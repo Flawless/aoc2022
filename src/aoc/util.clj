@@ -1,4 +1,12 @@
-(ns aoc.util)
+(ns aoc.util
+  (:require [clojure.java.io :as io]))
+
+(defn read-input [day-number]
+  (-> (io/resource (str "day-" day-number))
+      (slurp)))
+
+(defn pad [string pad-char desired-length]
+  (apply conj (vec string) (take (- desired-length (count string)) (repeat pad-char))))
 
 (defn xf-sort
   "A sorting transducer. Mostly a syntactic improvement to allow composition of
@@ -18,8 +26,7 @@
           (.add temp-list x)
           xs))))))
 
-(defn excluding-partition-by
-  [f coll]
+(defn excluding-partition-by [f coll]
   (->> coll
        (partition-by f)
        (remove #(every? identity (map f %)))))
